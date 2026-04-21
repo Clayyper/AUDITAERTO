@@ -1,0 +1,176 @@
+O caminho mais seguro é este:
+
+tentar ler o PDF com texto nativo quando ele vier digital
+se vier como foto ou PDF escaneado, fazer extração visual dos campos
+converter isso em um objeto interno, por exemplo:
+saldo de salário
+aviso prévio
+férias vencidas
+férias proporcionais
+13º
+descontos
+líquido
+comparar com o cálculo do sistema
+mostrar uma tela de auditoria com:
+valor do sistema
+valor lido do TRCT
+diferença
+status: confere / divergente
+Pensou por 8s
+
+Sim, é totalmente possível.
+
+E, para esse sistema, isso seria até um diferencial forte:
+calcular a rescisão e comparar automaticamente com o TRCT enviado em PDF ou imagem.
+
+O ideal é suportar 2 entradas:
+
+1. PDF do TRCT
+
+melhor cenário
+quando o PDF tem texto embutido, a extração costuma ficar bem mais confiável
+
+2. Imagem/foto do TRCT
+
+também dá para fazer
+mas pode ter mais erro por causa de:
+foto torta
+baixa nitidez
+sombra
+campos pequenos
+documento amassado ou cortado
+Como ficaria a arquitetura
+
+Seu sistema poderia ter este fluxo:
+
+Etapa 1 — cálculo interno
+
+usuário informa os dados
+sistema calcula a rescisão completa
+
+Etapa 2 — importação do TRCT
+
+usuário envia PDF ou imagem
+sistema lê os campos do documento
+
+Etapa 3 — normalização
+
+converter o conteúdo extraído em um objeto padrão, por exemplo:
+{
+  saldoSalario: 1200.50,
+  avisoPrevio: 3500.00,
+  feriasVencidas: 2200.00,
+  tercoFeriasVencidas: 733.33,
+  feriasProporcionais: 1100.00,
+  tercoFeriasProporcionais: 366.67,
+  decimoTerceiro: 900.00,
+  multaFgts: 5400.00,
+  descontos: 320.15,
+  liquido: 15080.35
+}
+
+Etapa 4 — auditoria
+
+comparar o cálculo do sistema com o valor lido do TRCT
+exibir:
+valor calculado
+valor do TRCT
+diferença
+status
+Exemplo de comparação
+[
+  {
+    rubrica: "Saldo de salário",
+    sistema: 1200.50,
+    trct: 1200.50,
+    diferenca: 0,
+    status: "OK"
+  },
+  {
+    rubrica: "Férias vencidas",
+    sistema: 2200.00,
+    trct: 2000.00,
+    diferenca: 200.00,
+    status: "Divergente"
+  }
+]
+O que é mais confiável
+
+A ordem de confiabilidade seria:
+
+1. PDF digital com texto
+
+melhor opção
+
+2. PDF escaneado
+
+funciona, mas exige leitura visual
+
+3. imagem/foto
+
+funciona, mas precisa de boa qualidade
+O que eu recomendo no sistema
+
+Criar dois modos:
+
+Modo A — comparação automática
+
+quando o documento estiver legível o suficiente
+
+Modo B — conferência assistida
+
+o sistema lê os campos
+mostra o que encontrou
+o usuário corrige algum campo antes da comparação final
+
+Isso evita erro quando um número é lido errado.
+
+Estrutura ideal de telas
+
+Você pode ter:
+
+Tela 1: formulário da rescisão
+Tela 2: upload do TRCT
+Tela 3: campos extraídos do documento
+Tela 4: auditoria comparativa
+Tela 5: memória de cálculo e relatório final
+Limitação real
+
+Sim, dá para fazer, mas eu não venderia isso como 100% automático para qualquer imagem.
+O correto é tratar assim:
+
+PDF digital: alta confiança
+imagem/foto: média confiança
+sempre com revisão humana antes de fechar
+Melhor caminho de implementação
+
+Eu faria nesta ordem:
+
+Fase 1
+
+cálculo completo em JavaScript
+
+Fase 2
+
+tela de upload do TRCT
+
+Fase 3
+
+leitura dos campos do PDF/imagem
+
+Fase 4
+
+auditoria comparativa
+
+Se você quiser, no prximo passo eu já monto para você a estrutura do sistema com upload de PDF/imagem + motor de comparação, junto com o cálculo da rescisão em JavaScript.
+
+Pontos importantes desta primeira versão:
+
+PDF textual já entra com extração automática.
+Imagem/foto ainda não faz OCR real; ela entra em revisão assistida para você conferir e editar os campos antes da comparação.
+INSS e IRRF estão em versão simplificada nesta etapa, então precisam de refinamento antes de uso operacional mais sensível.
+O cálculo está estruturado para evolução, mas não deve ser tratado como parecer jurídico definitivo sem validação.
+
+As bases legais principais que embasam a estrutura inicial são a Lei 12.506/2011 para aviso prévio proporcional, o modelo oficial de TRCT do eSocial e as orientações da CAIXA para multa rescisória de 40% e recolhimentos rescisórios do FGTS.
+
+O próximo passo mais importante é eu te entregar a versão 2 com tabela real de INSS/IRRF e melhoria da leitura do TRCT.

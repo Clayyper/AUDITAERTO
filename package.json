@@ -1,0 +1,18 @@
+{
+  "name": "rescisao-trct-auditoria",
+  "version": "1.0.0",
+  "description": "Sistema de cálculo de rescisão sem justa causa com importação de TRCT em PDF/imagem e auditoria comparativa.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    
+    "pdf-parse": "^1.1.1",
+    "pdf-poppler": "^0.2.1",
+    "tesseract.js": "^5.1.1",
+    "pdfkit": "^0.15.0"
+  }
+}

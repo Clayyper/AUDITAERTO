@@ -1,0 +1,7 @@
+{
+    "github-actions.use-enterprise": true,
+    "github.copilot.chat.localeOverride": "pt-br",
+    "containers.composeBuild": false,
+    "containers.containerClient": "com.microsoft.visualstudio.containers.podman",
+    "containers.orchestratorClient": "com.microsoft.visualstudio.orchestrators.podmancompose"
+}

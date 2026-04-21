@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "achaq.vercel-theme",
+        "github.remotehub",
+        "ms-vscode-remote.remote-containers",
+        "github.vscode-github-actions",
+        "ms-azuretools.vscode-docker",
+        "redhat.fabric8-analytics"
+    ]
+}
